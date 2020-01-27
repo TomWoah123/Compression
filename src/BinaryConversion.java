@@ -15,8 +15,8 @@ public class BinaryConversion
 //        lzwConvert( str );
 //        lzwToFile();
 //        decompressLZW( "00011010000001100001001000000100100000000010000011000110000100100001000010000000", 10 );
-//        findBestBitLevel( "dalalalalaladalala" );
-        decompressFromFile();
+        findBestBitLevel( "hellohellohellohellohellohellohellohellohellohello" );
+//        decompressFromFile();
     }
 
     public static void binaryConvert( String string )
@@ -291,7 +291,7 @@ public class BinaryConversion
         }
     }
 
-    public static double lzwReturnDouble(String string, int bitlevel )
+    private static double lzwReturnDouble(String string, int bitlevel )
     {
         int dictValue = 128;
         String binary = "";
@@ -378,7 +378,7 @@ public class BinaryConversion
             numOutputs++;
             i++;
             String output = current;
-            System.out.print( output );
+//            System.out.print( output );
         }
         if ( i == ( string.length() - 2 ) )
         {
@@ -391,12 +391,12 @@ public class BinaryConversion
             }
             binary += "00" + Integer.toBinaryString( dictionary.get( k ) );
             numOutputs++;
-            System.out.println( k );
+//            System.out.println( k );
         }
         else if ( i == string.length() - 1 )
         {
             String c = "" + string.charAt( i );
-            System.out.println( c );
+//            System.out.println( c );
             String bin = Integer.toBinaryString( (int) c.charAt( 0 ) );
             while( bin.length() < bitlevel )
             {
@@ -407,13 +407,13 @@ public class BinaryConversion
         }
         else
         {
-            System.out.println();
+//            System.out.println();
         }
 //        System.out.println( "Dictionary: " + dictionary.toString() );
 //        System.out.println( "Binary: " + binary );
-        double stringbits = string.length() * 10;
+        double stringbits = string.length() * bitlevel;
 //        System.out.println( "Original: " + (int) stringbits );
-        double lzwbits = numOutputs * bitlevel;
+        double lzwbits = numOutputs * ( bitlevel + 1 );
 //        System.out.println( "Compressed: " + (int) lzwbits );
         double ratio = stringbits / lzwbits;
 //        DecimalFormat df = new DecimalFormat( "0.00" );
@@ -425,8 +425,10 @@ public class BinaryConversion
     {
         double ratio = lzwReturnDouble( string, 8 );
         int i = 9;
-        while( ratio < lzwReturnDouble( string, i ) )
+        while( ratio < ( lzwReturnDouble( string, i ) - 0.01 ) )
         {
+            System.out.println( "Bitlevel " + i + ": " + lzwReturnDouble( string, i ) );
+            ratio = lzwReturnDouble( string, i );
             i++;
         }
         System.out.println( "The best bitlevel is " + i );
